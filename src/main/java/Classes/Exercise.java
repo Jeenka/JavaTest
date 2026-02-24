@@ -2,6 +2,7 @@ package Classes;
 import Enums.Difficulty;
 import Enums.Equipment;
 import Enums.MuscleGroup;
+import Interfaces.Identifiable;
 import Interfaces.Validable;
 import lombok.*;
 
@@ -12,7 +13,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Exercise implements Validable {
+public class Exercise implements Identifiable<Integer>, Validable {
     int id;
     //TODO: code
     @NonNull
@@ -24,13 +25,6 @@ public class Exercise implements Validable {
     String link;
     //ValidatorUtility<String>
     //TODO: equals and hashCode, написать Validator на Link, использовать regex
-
-
-
-    /*@Override
-    public String toString() {
-        return this.id + " " + this.name + " " + this.muscleGroup + " " + this.equipment + " " + this.difficulty + " " + getCaloriesPerMinute().orElseGet(() -> {return 0;});
-    }*/
 
     /*public static Exercise getExercise(int id, @NonNull String name){
         return new Exercise(id, name, MuscleGroup.ARMS, Equipment.NONE, Difficulty.NONE, 0);
@@ -45,12 +39,17 @@ public class Exercise implements Validable {
         this.link = link;
     }*/
 
-    /*public Optional<Integer>fetchCaloriesPerMinute(){
+    public Optional<Integer>getCaloriesPerMinute(){
         return Optional.ofNullable(caloriesPerMinute);
-    }*/
+    }
 
     public Optional<String>Link(){
         return Optional.ofNullable(link);
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
     }
 
     @Override
@@ -61,6 +60,6 @@ public class Exercise implements Validable {
         ValidatorUtility.validate(equipment, "equipment");
         ValidatorUtility.validate(difficulty, "difficulty");
         ValidatorUtility.validateOptional(caloriesPerMinute, "caloriesPerMinute");
-        ValidatorUtility.validate(link, "link");
+        ValidatorUtility.validateLink(link, "link");
     }
 }
