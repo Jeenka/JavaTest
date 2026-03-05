@@ -10,6 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -32,8 +33,23 @@ public class WorkoutTemplate implements Identifiable<Integer>, Validable {
         ValidatorUtility.validate(id, "id");
         ValidatorUtility.validate(name, "name");
         ValidatorUtility.validate(type, "type");
-        /*if (items == null) {
+        if (items == null) {
             throw new IllegalArgumentException("items must not be null");
-        }*/
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof WorkoutTemplate workoutTemplate)) return false;
+        return id == workoutTemplate.id &&
+                Objects.equals(name, workoutTemplate.name) &&
+                type == workoutTemplate.type &&
+                Objects.equals(items, workoutTemplate.items);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, type, items);
     }
 }

@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -33,5 +35,21 @@ public class Goal implements Identifiable<Integer>, Validable {
         ValidatorUtility.validate(type, "type");
         ValidatorUtility.validate(targetValue, "targetValue");
         ValidatorUtility.validate(period, "period");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Goal goal)) return false;
+        return id == goal.id &&
+                targetValue == goal.targetValue &&
+                active == goal.active &&
+                type == goal.type &&
+                period == goal.period;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, type, targetValue, period, active);
     }
 }

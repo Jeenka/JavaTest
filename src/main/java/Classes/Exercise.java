@@ -6,6 +6,7 @@ import Interfaces.Identifiable;
 import Interfaces.Validable;
 import lombok.*;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Getter
@@ -15,7 +16,8 @@ import java.util.Optional;
 @ToString
 public class Exercise implements Identifiable<Integer>, Validable {
     int id;
-    //TODO: code
+    @NonNull
+    String code;
     @NonNull
     String name;
     MuscleGroup muscleGroup;
@@ -23,21 +25,6 @@ public class Exercise implements Identifiable<Integer>, Validable {
     Difficulty difficulty;
     Integer caloriesPerMinute;
     String link;
-    //ValidatorUtility<String>
-    //TODO: equals and hashCode, написать Validator на Link, использовать regex
-
-    /*public static Exercise getExercise(int id, @NonNull String name){
-        return new Exercise(id, name, MuscleGroup.ARMS, Equipment.NONE, Difficulty.NONE, 0);
-    }*/
-    /*public Exercise(int id, @NonNull final String name, MuscleGroup muscleGroup, Equipment equipment, Difficulty difficulty, Integer caloriesPerMinute, String link){
-        this.id = id;
-        this.name = name;
-        this.muscleGroup = muscleGroup;
-        this.equipment = equipment;
-        this.difficulty = difficulty;
-        this.caloriesPerMinute = caloriesPerMinute;
-        this.link = link;
-    }*/
 
     public Optional<Integer>getCaloriesPerMinute(){
         return Optional.ofNullable(caloriesPerMinute);
@@ -55,11 +42,31 @@ public class Exercise implements Identifiable<Integer>, Validable {
     @Override
     public void validate() {
         ValidatorUtility.validate(id, "id");
+        ValidatorUtility.validate(code, "code");
         ValidatorUtility.validate(name, "name");
         ValidatorUtility.validate(muscleGroup, "muscleGroup");
         ValidatorUtility.validate(equipment, "equipment");
         ValidatorUtility.validate(difficulty, "difficulty");
         ValidatorUtility.validateOptional(caloriesPerMinute, "caloriesPerMinute");
         ValidatorUtility.validateLink(link, "link");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Exercise exercise)) return false;
+        return id == exercise.id &&
+                Objects.equals(code, exercise.code) &&
+                Objects.equals(name, exercise.name) &&
+                muscleGroup == exercise.muscleGroup &&
+                equipment == exercise.equipment &&
+                difficulty == exercise.difficulty &&
+                Objects.equals(caloriesPerMinute, exercise.caloriesPerMinute) &&
+                Objects.equals(link, exercise.link);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, code, name, muscleGroup, equipment, difficulty, caloriesPerMinute, link);
     }
 }
